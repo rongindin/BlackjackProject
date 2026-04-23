@@ -1,7 +1,7 @@
 import type { Item } from "types";
 import { send } from "clientUtilities";
 import { create } from "componentUtilities";
-console.log("hello");
+console.log("something else");
 var itemInput = document.querySelector<HTMLInputElement>("#itemInput")!;
 var amountInput = document.querySelector<HTMLInputElement>("#amountInput")!;
 var addButton = document.querySelector<HTMLButtonElement>("#addButton")!;
