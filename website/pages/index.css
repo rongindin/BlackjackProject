@@ -1,16 +1,215 @@
-#containerDiv {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  color: white;
 }
 
-.authDiv {
-  margin: 1rem;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 1rem;
+/* =========================
+   CASINO TABLE BACKGROUND
+========================= */
+
+body {
+  background: #0b0b0b;
+}
+
+/* WOOD FRAME + FELT TABLE */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  border: 26px solid #5a3a1a;
+  box-sizing: border-box;
+
+  background: radial-gradient(circle at center, #1e7a3a 0%, #0f4f26 100%);
+
+  box-shadow: inset 0 0 80px rgba(0,0,0,0.6);
+
+  z-index: -1;
+}
+
+/* soft lighting highlight */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* =========================
+   DEALER AREA (TOP)
+========================= */
+
+.dealer {
+  position: absolute;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+/* =========================
+   PLAYER AREA (BOTTOM)
+========================= */
+
+.player {
+  position: absolute;
+  bottom: 155px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.cards {
+  font-size: 36px;
+  letter-spacing: 6px;
+  margin: 8px;
+  min-height: 45px;
+
+  text-shadow: 0 2px 3px rgba(0,0,0,0.6);
+}
+
+/* =========================
+   CENTER INFO (BALANCE / BET)
+========================= */
+
+.info {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* =========================
+   CHIPS AREA
+========================= */
+
+.bets {
+  position: absolute;
+  bottom: 105px;
+  left: 50%;
+  transform: translateX(-50%);
+
   display: flex;
-  flex-direction: column;
+  gap: 14px;
+}
+
+/* CHIP BASE STYLE */
+.chip {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+
+  display: flex;
   align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+
+  border: 5px dashed rgba(255,255,255,0.5);
+
+  box-shadow: 0 5px 10px rgba(0,0,0,0.6);
+
+  transition: transform 0.15s ease;
+}
+
+/* RED CHIP */
+.chip[data-value="10"] {
+  background: radial-gradient(circle, #fff, #e74c3c);
+  color: #000;
+}
+
+/* BLUE CHIP */
+.chip[data-value="50"] {
+  background: radial-gradient(circle, #fff, #3498db);
+  color: #000;
+}
+
+/* YELLOW CHIP (slightly raised premium chip) */
+.chip[data-value="100"] {
+  background: radial-gradient(circle, #fff, #f1c40f);
+  color: #000;
+
+  transform: translateY(-6px);
+}
+
+/* =========================
+   CONTROLS (FIXED BAR)
+========================= */
+
+.controls {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 12px;
+
+  z-index: 1000;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+
+  font-weight: bold;
+  cursor: pointer;
+
+  background: linear-gradient(#d4af37, #b8860b);
+  color: #000;
+
+  box-shadow: 0 3px 0 #6b4f00;
+
+  transition: 0.1s;
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #6b4f00;
+}
+
+/* =========================
+   POPUP
+========================= */
+
+.popup {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: rgba(0,0,0,0.85);
+  color: white;
+
+  padding: 12px 20px;
+  border-radius: 10px;
+
+  border: 2px solid #d4af37;
+
+  z-index: 9999;
+
+  animation: fade 2s ease;
+}
+
+@keyframes fade {
+  0% { opacity: 0; transform: translate(-50%, -10px); }
+  10% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -10px); }
 }

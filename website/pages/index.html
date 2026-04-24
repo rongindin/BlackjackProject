@@ -1,182 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <title>Blackjack</title>
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      background-color: #0b6623;
-      color: white;
-    }
-    button {
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 16px;
-    }
-  </style>
+  <link rel="stylesheet" href="index.css" />
 </head>
+
 <body>
 
-  <h1>🃏 Blackjack</h1>
+  <!-- DEALER (TOP) -->
+  <section class="dealer">
+    <h2>Dealer</h2>
+    <div id="dealerCards" class="cards"></div>
+    <div>Dealer Score: <span id="dealerScore">0</span></div>
+  </section>
 
-  <p id="dealer"></p>
-  <p id="player"></p>
+  <hr />
 
-  <button onclick="hit()">Hit</button>
-  <button onclick="stand()">Stand</button>
-  <button onclick="startGame()">New Game</button>
+  <!-- PLAYER (BOTTOM) -->
+  <section class="player">
+    <h2>Player</h2>
+    <div id="playerCards" class="cards"></div>
+    <div>Player Score: <span id="playerScore">0</span></div>
+  </section>
 
-  <script>
-    let deck = [];
-    let player = [];
-    let dealer = [];
-    let gameOver = false;
+  <hr />
 
-    function createDeck() {
-      const suits = ["♠", "♥", "♦", "♣"];
-      const values = [
-        ["A", 11], ["2", 2], ["3", 3], ["4", 4],
-        ["5", 5], ["6", 6], ["7", 7], ["8", 8],
-        ["9", 9], ["10", 10], ["J", 10], ["Q", 10], ["K", 10]
-      ];
+  <!-- GAME INFO -->
+  <div class="info">
+    <div>Balance: <span id="balance">1000</span></div>
+    <div>Bet: <span id="bet">0</span></div>
+  </div>
 
-      let d = [];
-      for (let suit of suits) {
-        for (let val of values) {
-          d.push({ name: val[0], suit: suit, value: val[1] });
-        }
-      }
-      return d;
-    }
+  <!-- BET BUTTONS -->
+  <div class="bets">
+    <button class="bet" data-value="10">+10</button>
+    <button class="bet" data-value="50">+50</button>
+    <button class="bet" data-value="100">+100</button>
+    <button id="clearBet">Clear Bet</button>
+  </div>
 
-    function shuffle(d) {
-      for (let i = d.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [d[i], d[j]] = [d[j], d[i]];
-      }
-    }
+  <!-- GAME CONTROLS -->
+  <div class="controls">
+    <button id="confirmBtn">Deal</button>
+    <button id="hitBtn">Hit</button>
+    <button id="standBtn">Stand</button>
+  </div>
 
-    function getScore(hand) {
-      let score = 0;
-      let aces = 0;
-
-      for (let c of hand) {
-        score += c.value;
-        if (c.name === "A") aces++;
-      }
-
-      while (score > 21 && aces > 0) {
-        score -= 10;
-        aces--;
-      }
-
-      return score;
-    }
-
-    function render(hideDealer = true) {
-      // Player
-      document.getElementById("player").innerText =
-        "Player: " + player.map(c => c.name + c.suit).join(" ") +
-        " (" + getScore(player) + ")";
-
-      // Dealer
-      if (hideDealer && !gameOver) {
-        document.getElementById("dealer").innerText =
-          "Dealer: [??] " + dealer[1].name + dealer[1].suit;
-      } else {
-        document.getElementById("dealer").innerText =
-          "Dealer: " + dealer.map(c => c.name + c.suit).join(" ") +
-          " (" + getScore(dealer) + ")";
-      }
-    }
-
-    function checkBlackjack() {
-      let playerScore = getScore(player);
-      let dealerScore = getScore(dealer);
-
-      // Natural Blackjack (2 cards)
-      if (playerScore === 21 && player.length === 2) {
-        if (dealerScore === 21 && dealer.length === 2) {
-          alert("Both have Blackjack! Push.");
-        } else {
-          alert("Blackjack! You win! 🎉");
-        }
-        gameOver = true;
-        render(false);
-        return true;
-      }
-
-      if (dealerScore === 21 && dealer.length === 2) {
-        alert("Dealer has Blackjack. You lose.");
-        gameOver = true;
-        render(false);
-        return true;
-      }
-
-      return false;
-    }
-
-    function checkGameState() {
-      let score = getScore(player);
-
-      if (score > 21) {
-        alert("You busted! Dealer wins.");
-        gameOver = true;
-      } else if (score === 21) {
-        alert("21!");
-        stand(); // auto-stand
-      }
-
-      render();
-    }
-
-    function startGame() {
-      deck = createDeck();
-      shuffle(deck);
-
-      player = [deck.pop(), deck.pop()];
-      dealer = [deck.pop(), deck.pop()];
-      gameOver = false;
-
-      render();
-
-      checkBlackjack();
-    }
-
-    function hit() {
-      if (gameOver) return;
-
-      player.push(deck.pop());
-      checkGameState();
-    }
-
-    function stand() {
-      if (gameOver) return;
-
-      // Dealer turn
-      while (getScore(dealer) < 17) {
-        dealer.push(deck.pop());
-      }
-
-      let p = getScore(player);
-      let d = getScore(dealer);
-
-      if (d > 21 || p > d) {
-        alert("You win!");
-      } else if (p < d) {
-        alert("Dealer wins!");
-      } else {
-        alert("Push!");
-      }
-
-      gameOver = true;
-      render(false);
-    }
-
-    // Start immediately
-    startGame();
-  </script>
-
+  <script src="index.js"></script>
 </body>
 </html>
