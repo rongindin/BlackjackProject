@@ -1,215 +1,294 @@
-html, body {
-  height: 100%;
+body {
   margin: 0;
   font-family: Arial, sans-serif;
-  overflow: hidden;
+  background: radial-gradient(circle at center, #00140f, #000);
   color: white;
 }
 
-/* =========================
-   CASINO TABLE BACKGROUND
-========================= */
-
-body {
-  background: #0b0b0b;
+/* MAIN TABLE */
+.table {
+  width: 95%;
+  max-width: 1400px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #003b2a, #00150f);
+  box-shadow: 0 0 60px rgba(0,255,150,0.2);
+  border: 1px solid rgba(0,255,150,0.25);
 }
 
-/* WOOD FRAME + FELT TABLE */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-
-  border: 26px solid #5a3a1a;
-  box-sizing: border-box;
-
-  background: radial-gradient(circle at center, #1e7a3a 0%, #0f4f26 100%);
-
-  box-shadow: inset 0 0 80px rgba(0,0,0,0.6);
-
-  z-index: -1;
-}
-
-/* soft lighting highlight */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 60%);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* =========================
-   DEALER AREA (TOP)
-========================= */
-
-.dealer {
-  position: absolute;
-  top: 75px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-}
-
-/* =========================
-   PLAYER AREA (BOTTOM)
-========================= */
-
-.player {
-  position: absolute;
-  bottom: 155px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-}
-
-/* =========================
-   CARDS
-========================= */
-
-.cards {
-  font-size: 36px;
-  letter-spacing: 6px;
-  margin: 8px;
-  min-height: 45px;
-
-  text-shadow: 0 2px 3px rgba(0,0,0,0.6);
-}
-
-/* =========================
-   CENTER INFO (BALANCE / BET)
-========================= */
-
-.info {
-  position: absolute;
-  top: 48%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-/* =========================
-   CHIPS AREA
-========================= */
-
-.bets {
-  position: absolute;
-  bottom: 105px;
-  left: 50%;
-  transform: translateX(-50%);
-
+/* TOP BAR */
+.topbar {
   display: flex;
-  gap: 14px;
-}
-
-/* CHIP BASE STYLE */
-.chip {
-  width: 75px;
-  height: 75px;
-  border-radius: 50%;
-
-  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-
-  font-weight: bold;
-  cursor: pointer;
-  user-select: none;
-
-  border: 5px dashed rgba(255,255,255,0.5);
-
-  box-shadow: 0 5px 10px rgba(0,0,0,0.6);
-
-  transition: transform 0.15s ease;
+  margin-bottom: 25px;
 }
 
-/* RED CHIP */
-.chip[data-value="10"] {
-  background: radial-gradient(circle, #fff, #e74c3c);
-  color: #000;
+.title {
+  font-size: 42px;
+  letter-spacing: 8px;
+  text-shadow: 0 0 10px #00ff99, 0 0 25px #00ffaa;
 }
 
-/* BLUE CHIP */
-.chip[data-value="50"] {
-  background: radial-gradient(circle, #fff, #3498db);
-  color: #000;
-}
-
-/* YELLOW CHIP (slightly raised premium chip) */
-.chip[data-value="100"] {
-  background: radial-gradient(circle, #fff, #f1c40f);
-  color: #000;
-
-  transform: translateY(-6px);
-}
-
-/* =========================
-   CONTROLS (FIXED BAR)
-========================= */
-
-.controls {
-  position: fixed;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-
+/* GAME AREA */
+.game-area {
   display: flex;
-  gap: 12px;
-
-  z-index: 1000;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 40px;
 }
 
-/* =========================
-   BUTTONS
-========================= */
+.dealer, .player {
+  flex: 1;
+  padding: 12px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 12px;
+}
 
-button {
-  padding: 10px 14px;
-  border: none;
+/* CARDS CONTAINER */
+.cards {
+  min-height: 200px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+/* CARD (ANIMATED — from your earlier version) */
+.card {
+  width: 90px;
+  height: 130px;
+  background: white;
+  color: black;
   border-radius: 8px;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-weight: bold;
+
+  box-shadow: 0 0 10px rgba(0,255,150,0.4);
+
+  /* DEAL ANIMATION */
+  animation: deal 0.25s ease-out;
+}
+
+/* CARD DEAL ANIMATION */
+@keyframes deal {
+  from {
+    transform: translateY(-40px) scale(0.5) rotate(-10deg);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+/* SCORE */
+.score {
+  margin-top: 10px;
+  opacity: 0.8;
+}
+
+/* BUTTONS */
+button {
+  padding: 20px 28px;
+  border: solid 2px #007a4a;
+  border-radius: 8px;
   cursor: pointer;
-
-  background: linear-gradient(#d4af37, #b8860b);
-  color: #000;
-
-  box-shadow: 0 3px 0 #6b4f00;
-
-  transition: 0.1s;
+  background: linear-gradient(145deg, #00c97b, #007a4a);
+  color: white;
+  transition: 0.2s;
 }
 
-button:active {
-  transform: translateY(2px);
-  box-shadow: 0 1px 0 #6b4f00;
+button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 12px #00ff99;
 }
 
-/* =========================
-   POPUP
-========================= */
+/* BETTING PANEL */
+.betting-panel {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  justify-content:center;
+}
 
+/* ACTIONS */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+/* POPUP (your TS uses this) */
 .popup {
   position: fixed;
-  top: 25px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
-
-  background: rgba(0,0,0,0.85);
+  background: black;
   color: white;
-
   padding: 12px 20px;
   border-radius: 10px;
-
-  border: 2px solid #d4af37;
-
   z-index: 9999;
+  box-shadow: 0 0 15px #00ff99;
 
-  animation: fade 2s ease;
+  animation: fade 4s ease forwards;
 }
 
 @keyframes fade {
-  0% { opacity: 0; transform: translate(-50%, -10px); }
-  10% { opacity: 1; }
-  100% { opacity: 0; transform: translate(-50%, -10px); }
+  0% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -20px); }
+}
+
+/* OPTIONAL: subtle table pulse glow */
+.table {
+  animation: tableGlow 3s infinite alternate;
+}
+
+@keyframes tableGlow {
+  from { box-shadow: 0 0 40px rgba(0,255,150,0.15); }
+  to { box-shadow: 0 0 80px rgba(0,255,150,0.35); }
+}
+
+.card {
+  width: 125px;
+  height: 170px;
+  background: white;
+  border-radius: 10px;
+  position: relative;
+
+  box-shadow: 0 0 10px #00ff9640;
+  font-family: Arial, sans-serif;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation: deal 0.25s ease-out;
+}
+
+/* DEAL ANIMATION */
+@keyframes deal {
+  from {
+    transform: translateY(-30px) scale(0.6) rotate(-8deg);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+/* RED SUITS */
+.card.red {
+  color: #e53935;
+}
+
+/* CORNERS */
+.corner {
+  position: absolute;
+  font-size: 20px;
+  line-height: 14px;
+  text-align: center;
+}
+
+.top-left {
+  top: 6px;
+  left: 6px;
+}
+
+.bottom-right {
+  bottom: 6px;
+  right: 6px;
+  transform: rotate(180deg);
+}
+
+/* BIG CENTER SUIT */
+.center-suit {
+  font-size: 48px;
+}
+
+/* CARD BACK (dealer hidden card) */
+.card.back {
+  background: repeating-linear-gradient(
+    45deg,
+    #00995940,
+    #00995940 16px,
+    #00533140 16px,
+    #00533140 32px
+  );
+  color: transparent;
+}
+
+#stats {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+
+.custom-bet {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+/* INPUT STYLING */
+#customBetInput {
+  width: 140px;
+  padding: 10px 12px;
+
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid rgba(0, 255, 150, 0.25);
+  border-radius: 10px;
+
+  color: #0ff;
+  font-size: 14px;
+  outline: none;
+
+  box-shadow: 0 0 10px rgba(0, 255, 150, 0.1);
+  transition: 0.2s ease;
+}
+
+/* FOCUS STATE */
+#customBetInput:focus {
+  border-color: rgba(0, 255, 150, 0.7);
+  box-shadow: 0 0 12px rgba(0, 255, 150, 0.25);
+  background: rgba(25, 25, 25, 0.95);
+}
+
+/* REMOVE SPINNER ARROWS (important for clean UI) */
+#customBetInput::-webkit-outer-spin-button,
+#customBetInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#customBetInput {
+  -moz-appearance: textfield;
+}
+
+/* BUTTON MATCHING STYLE */
+.custom-bet button {
+  padding: 10px 14px;
+  border-radius: 10px;
+
+  background: rgba(0, 255, 150, 0.15);
+  border: 1px solid rgba(0, 255, 150, 0.3);
+
+  color: #0ff;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.custom-bet button:hover {
+  background: rgba(0, 255, 150, 0.25);
+  box-shadow: 0 0 12px rgba(0, 255, 150, 0.2);
 }

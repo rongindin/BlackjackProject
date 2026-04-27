@@ -1,3 +1,6 @@
+let wins = 0;
+let losses = 0;
+let pushes = 0;
 let balance = 1000;
 let bet = 0;
 
@@ -123,32 +126,101 @@ function score(hand: string[]) {
   return total;
 }
 
+
 /* =========================
    UI
 ========================= */
 
-function updateUI() {
-  document.getElementById("balance")!.textContent = String(balance);
-  document.getElementById("bet")!.textContent = String(bet);
+function renderHand(container: HTMLElement, hand: string[]) {
+  container.innerHTML = "";
 
-  const dealerCards = document.getElementById("dealerCards")!;
-  const playerCards = document.getElementById("playerCards")!;
+  for (const c of hand) {
+    const card = document.createElement("div");
+    card.className = "card";
 
-  const dealerScore = document.getElementById("dealerScore")!;
-  const playerScore = document.getElementById("playerScore")!;
+    const value = c.slice(0, -1);
+    const suit = c.slice(-1);
 
-  if (gameActive && hideDealerCard) {
-    dealerCards.textContent = "🂠 " + dealer[1];
-    dealerScore.textContent = "?";
-  } else {
-    dealerCards.textContent = dealer.join(" ");
-    dealerScore.textContent = String(score(dealer));
+    // color for red suits
+    if (suit === "♥" || suit === "♦") {
+      card.classList.add("red");
+    }
+
+    card.innerHTML = `
+      <div class="corner top-left">${value}<br>${suit}</div>
+      <div class="center-suit">${suit}</div>
+      <div class="corner bottom-right">${value}<br>${suit}</div>
+    `;
+
+    container.appendChild(card);
   }
-
-  playerCards.textContent = player.join(" ");
-  playerScore.textContent = String(score(player));
 }
 
+function updateUI(): void {
+  const balanceEl = document.getElementById("balance")!;
+  const betEl = document.getElementById("bet")!;
+
+  const dealerCardsEl = document.getElementById("dealerCards")!;
+  const playerCardsEl = document.getElementById("playerCards")!;
+  const statsEl = document.getElementById("stats")!;
+  const dealerScoreEl = document.getElementById("dealerScore")!;
+  const playerScoreEl = document.getElementById("playerScore")!;
+
+  // Update money UI
+  balanceEl.textContent = String(balance);
+  betEl.textContent = String(bet);
+
+  // =========================
+  // PLAYER (always full render)
+  // =========================
+  renderHand(playerCardsEl, player);
+  playerScoreEl.textContent = String(score(player));
+
+  // =========================
+  // DEALER
+  // =========================
+  dealerCardsEl.innerHTML = "";
+
+  if (gameActive && hideDealerCard) {
+    // show first card
+    const firstCard = document.createElement("div");
+    firstCard.className = "card";
+
+    const firstValue = dealer[0].slice(0, -1);
+    const firstSuit = dealer[0].slice(-1);
+
+    if (firstSuit === "♥" || firstSuit === "♦") {
+      firstCard.classList.add("red");
+    }
+
+    firstCard.innerHTML = `
+      <div class="corner top-left">${firstValue}<br>${firstSuit}</div>
+      <div class="center-suit">${firstSuit}</div>
+      <div class="corner bottom-right">${firstValue}<br>${firstSuit}</div>
+    `;
+
+    // hidden card (card back)
+    const hiddenCard = document.createElement("div");
+    hiddenCard.className = "card back";
+    hiddenCard.textContent = "";
+
+    dealerCardsEl.appendChild(firstCard);
+    dealerCardsEl.appendChild(hiddenCard);
+
+    dealerScoreEl.textContent = "?";
+
+  } else {
+    // FULL REVEAL (uses same system as player → FIXES red + layout)
+    renderHand(dealerCardsEl, dealer);
+    dealerScoreEl.textContent = String(score(dealer));
+
+    const totalGames = wins + losses;
+const winRate = totalGames === 0 ? 0 : (wins / totalGames) * 100;
+
+statsEl.textContent =
+  `Wins: ${wins} | Losses: ${losses} | Pushes: ${pushes} | Win Rate: ${winRate.toFixed(1)}%`;
+  }
+}
 /* =========================
    EVENTS
 ========================= */
@@ -158,7 +230,7 @@ function bindUI() {
     btn.addEventListener("click", () => {
       if (gameActive) return;
 
-      const val = Number((btn as HTMLElement).dataset.value);
+      const val = Number((btn as HTMLElement).dataset["value"]);
 
       if (bet + val <= balance) {
         bet += val;
@@ -177,6 +249,23 @@ function bindUI() {
   document.getElementById("confirmBtn")?.addEventListener("click", startRound);
   document.getElementById("hitBtn")?.addEventListener("click", hit);
   document.getElementById("standBtn")?.addEventListener("click", stand);
+
+  document.getElementById("addCustomBet")?.addEventListener("click", () => {
+  if (gameActive) return;
+
+  const input = document.getElementById("customBetInput") as HTMLInputElement;
+
+  // validation
+const value = Math.floor(Number(input.value));
+
+if (value <= 0) return;
+if (value > balance - bet) return;
+
+  bet += value;
+  input.value = "";
+
+  updateUI();
+});
 }
 
 /* =========================
@@ -278,8 +367,12 @@ function stand() {
 function endRound(win: boolean, push: boolean) {
   if (win) {
     balance += bet;
+    wins++;
   } else if (!push) {
     balance -= bet;
+    losses++;
+  } else {
+    pushes++;
   }
 
   bet = 0;
