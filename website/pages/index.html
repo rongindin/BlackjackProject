@@ -2,61 +2,101 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Blackjack Pro</title>
-  <link rel="stylesheet" href="index.css"/>
+  <title>Blackjack Project</title>
+  <link rel="stylesheet" href="index.css" />
 </head>
 
 <body>
 
-  <div class="table">
+  <div id="authBox" class="box">
+    <h1>Blackjack</h1>
 
-    <div class="topbar">
-      <div class="title">BLACKJACK</div>
+    <h2>Login</h2>
+    <input id="loginUsername" placeholder="Username" />
+    <input id="loginPassword" type="password" placeholder="Password" />
+    <button id="loginBtn">Login</button>
 
-      <div class="stats">
-        <div>Balance: $<span id="balance">1000</span></div>
-        <div>Bet: $<span id="bet">0</span></div>
-      </div>
-    </div>
+    <h2>Sign Up</h2>
+    <input id="registerUsername" placeholder="Username" />
+    <input id="registerPassword" type="password" placeholder="Password" />
+    <button id="registerBtn">Sign Up</button>
 
-    <div class="game-area">
-
-      <div class="dealer">
-        <h2>Dealer</h2>
-        <div id="dealerCards" class="cards"></div>
-        <div class="score">Score: <span id="dealerScore">0</span></div>
-      </div>
-
-      <div class="player">
-        <h2>Player</h2>
-        <div id="playerCards" class="cards"></div>
-        <div class="score">Score: <span id="playerScore">0</span></div>
-      </div>
-
-    </div>
-
-    <div class="betting-panel">
-      <button class="bet" data-value="10">+10</button>
-      <button class="bet" data-value="50">+50</button>
-      <button class="bet" data-value="100">+100</button>
-
-      <button id="clearBet">Clear Bet</button>
-      <button id="confirmBtn">Deal</button>
-      <div class="custom-bet">
-  <input id="customBetInput" type="number" placeholder="Custom bet" min="1" />
-  <button id="addCustomBet">Add Bet</button>
-</div>
-    </div>
-
-    <div class="actions">
-      <button id="hitBtn">Hit</button>
-      <button id="standBtn">Stand</button>
-    </div>
-
+    <p id="authMessage"></p>
   </div>
 
-  <div id="stats"></div>
+  <div id="gameBox" class="box hidden">
+    <h1>Blackjack</h1>
+
+    <div class="info">
+      <p>User: <span id="usernameText"></span></p>
+      <p>Balance: $<span id="balanceText">1000</span></p>
+      <p>Bet: $<span id="betText">0</span></p>
+      <p>Wins: <span id="winsText">0</span></p>
+      <p>Losses: <span id="lossesText">0</span></p>
+      <p>Pushes: <span id="pushesText">0</span></p>
+    </div>
+
+    <h2>Profile Stats</h2>
+
+    <div class="profile-stats">
+      <p>Total Games: <span id="totalGamesText">0</span></p>
+      <p>Win Rate: <span id="winRateText">0%</span></p>
+      <p>Best Balance: $<span id="bestBalanceText">1000</span></p>
+      <p>Current Rank: <span id="rankText">-</span></p>
+    </div>
+
+    <h2>Dealer</h2>
+    <div id="dealerCards" class="cards"></div>
+    <p>Dealer Score: <span id="dealerScore">0</span></p>
+
+    <h2>Player</h2>
+    <div id="playerCards" class="cards"></div>
+    <p>Player Score: <span id="playerScore">0</span></p>
+
+    <p id="message">Place your bet.</p>
+
+    <div>
+      <button class="betBtn" data-bet="100">Bet 100</button>
+      <button class="betBtn" data-bet="500">Bet 500</button>
+      <button class="betBtn" data-bet="1000">Bet 1000</button>
+      <button id="clearBetBtn">Clear Bet</button>
+    </div>
+
+    <div>
+      <button id="dealBtn">Deal</button>
+      <button id="hitBtn">Hit</button>
+      <button id="standBtn">Stand</button>
+      <button id="newGameBtn">New Game</button>
+      <button id="logoutBtn">Logout</button>
+    </div>
+  </div>
+
+  <div class="box">
+    <h2>Leaderboard</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>User</th>
+          <th>Balance</th>
+          <th>Wins</th>
+          <th>Losses</th>
+          <th>Pushes</th>
+        </tr>
+      </thead>
+
+      <tbody id="leaderboardBody"></tbody>
+    </table>
+  </div>
+
+  <div id="megaWinOverlay" class="mega-win hidden">
+    <div class="mega-win-box">
+      <div class="mega-win-small">BIG CASINO PAYOUT</div>
+      <div class="mega-win-title">MEGA WIN</div>
+      <div class="mega-win-amount">$<span id="megaWinAmount">0</span></div>
+    </div>
+  </div>
 
   <script src="index.js"></script>
 </body>

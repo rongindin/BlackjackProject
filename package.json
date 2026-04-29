@@ -1,0 +1,16 @@
+{
+  "name": "blackjack-project",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "tsc website/pages/index.ts --target ES2020 --lib DOM,ES2020 --outFile website/pages/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
